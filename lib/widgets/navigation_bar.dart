@@ -6,20 +6,25 @@ class NavigationBar1 extends StatelessWidget {
   final GlobalKey aboutKey;
   final GlobalKey projectsKey;
   final GlobalKey contactKey;
+  final bool isVertical;
 
   NavigationBar1({
     required this.homeKey,
     required this.aboutKey,
     required this.projectsKey,
     required this.contactKey,
+    required this.isVertical,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      width: isVertical ? 80 : null,
+      height: isVertical ? double.infinity : 60,
+      margin: EdgeInsets.symmetric(horizontal: isVertical ? 0 : 40, vertical: isVertical ? 40 : 20),
       decoration: BoxDecoration(
-        color: Colors.transparent,
+        color: Colors.green.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -29,12 +34,27 @@ class NavigationBar1 extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+      child: isVertical
+          ? Column( // Vertical layout
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: 20),
+          NavBarItem('Home', () => _scrollToSection(homeKey)),
+          SizedBox(height: 20),
+          NavBarItem('Work', () => _scrollToSection(projectsKey)),
+          SizedBox(height: 20),
+          NavBarItem('About', () => _scrollToSection(aboutKey)),
+          SizedBox(height: 20),
+          NavBarItem('Contact', () => _scrollToSection(contactKey)),
+        ],
+      ).animate().fadeIn(delay: 500.ms, duration: 1000.ms).slideX(begin: -1.0)
+          : Row( // Horizontal layout
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           NavBarItem('Home', () => _scrollToSection(homeKey)),
+          NavBarItem('Work', () => _scrollToSection(projectsKey)),
           NavBarItem('About', () => _scrollToSection(aboutKey)),
-          NavBarItem('Projects', () => _scrollToSection(projectsKey)),
           NavBarItem('Contact', () => _scrollToSection(contactKey)),
         ],
       ).animate().fadeIn(delay: 500.ms, duration: 1000.ms).slideY(begin: -1.0),
@@ -50,96 +70,28 @@ class NavigationBar1 extends StatelessWidget {
   }
 }
 
-class NavBarItem extends StatefulWidget {
+class NavBarItem extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
 
   NavBarItem(this.title, this.onPressed);
 
   @override
-  _NavBarItemState createState() => _NavBarItemState();
-}
-
-class _NavBarItemState extends State<NavBarItem> with TickerProviderStateMixin {
-  bool _isHovering = false;
-  late AnimationController _controller;
-  late Animation<Color?> _colorAnimation;
-  late Animation<Color?> _textColorAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    // Animation controller for color transitions
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-
-    // Define animations for background and text color changes
-    _colorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: Colors.blueAccent.withOpacity(0.2),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-
-    _textColorAnimation = ColorTween(
-      begin: Colors.white,
-      end: Colors.green,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (event) => _onHover(true),
-      onExit: (event) => _onHover(false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: _colorAnimation.value,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                widget.title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: _textColorAnimation.value,
-                  letterSpacing: 1.2,
-                ),
-              ),
-            );
-          },
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.green,
+            letterSpacing: 1.2,
+          ),
         ),
       ),
     );
   }
-
-  void _onHover(bool isHovering) {
-    setState(() {
-      _isHovering = isHovering;
-      if (_isHovering) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
-    });
-  }
 }
-

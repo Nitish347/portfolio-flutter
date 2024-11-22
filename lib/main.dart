@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'widgets/navigation_bar.dart';
-import 'widgets/home_section.dart';
-import 'widgets/about_section.dart';
-import 'widgets/projects_section.dart';
-import 'widgets/contact_section.dart';
+import 'home/home_section.dart';
+import 'about/about_section.dart';
+import 'projects_section.dart';
+import 'contact_section.dart';
 
 void main() {
   runApp(MyPortfolio());
@@ -22,28 +21,83 @@ class MyPortfolio extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
+      home: LayoutBuilder(
+        builder: (context, constraints) {
+          bool isMobile = constraints.maxWidth < 600; // Mobile breakpoint
 
-              Stack(
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Portfolio'),
+              backgroundColor: Colors.green,
+              actions: isMobile
+                  ? [
+                PopupMenuButton<String>(
+                  onSelected: (value) => _handleNavigation(value),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(value: 'Home', child: Text('Home')),
+                    PopupMenuItem(value: 'About', child: Text('About')),
+                    PopupMenuItem(value: 'Projects', child: Text('Projects')),
+                    PopupMenuItem(value: 'Contact', child: Text('Contact')),
+                  ],
+                ),
+              ]
+                  : [
+                TextButton(
+                  onPressed: () => _scrollToSection(homeKey),
+                  child: Text('Home', style: TextStyle(color: Colors.white)),
+                ),
+                TextButton(
+                  onPressed: () => _scrollToSection(aboutKey),
+                  child: Text('About', style: TextStyle(color: Colors.white)),
+                ),
+                TextButton(
+                  onPressed: () => _scrollToSection(projectsKey),
+                  child: Text('Projects', style: TextStyle(color: Colors.white)),
+                ),
+                TextButton(
+                  onPressed: () => _scrollToSection(contactKey),
+                  child: Text('Contact', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Column(
                 children: [
-                  HomeSection(key: homeKey),NavigationBar1(
-                    homeKey: homeKey,
-                    aboutKey: aboutKey,
-                    projectsKey: projectsKey,
-                    contactKey: contactKey,
-                  ),
+                  HomeSection(key: homeKey),
+                  AboutSection(key: aboutKey),
+                  ProjectsSection(key: projectsKey),
+                  ContactSection(key: contactKey),
                 ],
-              ),    // Attach keys to sections
-              AboutSection(key: aboutKey),
-              ProjectsSection(key: projectsKey),
-              ContactSection(key: contactKey),
-            ],
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
+    );
+  }
+
+  void _handleNavigation(String value) {
+    switch (value) {
+      case 'Home':
+        _scrollToSection(homeKey);
+        break;
+      case 'About':
+        _scrollToSection(aboutKey);
+        break;
+      case 'Projects':
+        _scrollToSection(projectsKey);
+        break;
+      case 'Contact':
+        _scrollToSection(contactKey);
+        break;
+    }
+  }
+
+  void _scrollToSection(GlobalKey key) {
+    Scrollable.ensureVisible(
+      key.currentContext!,
+      duration: Duration(seconds: 1),
+      curve: Curves.easeInOut,
     );
   }
 }
