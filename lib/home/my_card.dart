@@ -37,132 +37,149 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    bool isMobile = size.width < 1000;
+    bool isMobile = size.width < 800;
     return Stack(
       children: [
         Align(
           alignment: isMobile ? Alignment.topCenter : Alignment.topLeft,
           child: Padding(
-            padding: EdgeInsets.only(left: isMobile ? 0 : 50, top: isMobile ? 30 : 50,),
+            padding: EdgeInsets.only(
+              left: isMobile ? 0 : 50,
+              top: isMobile ? 80 : 50,
+            ),
             child: GlossyContainer(
               width: isMobile ? size.width * 0.95 : size.width * 0.35,
-              height: isMobile ? size.height * 0.5 : size.height * 0.8,
+              height: isMobile ? size.height * 0.6 : size.height * 0.9,
               imageOpacity: 0.1,
               strengthX: 10,
               strengthY: 10,
               borderRadius: BorderRadius.circular(20),
-              child:Padding(
+              child: Padding(
                 padding: EdgeInsets.only(top: isMobile ? 0 : 50),
                 child: SizedBox(
-                  width: isMobile ? size.width * 0.95 : size.width * 0.35,
-                  height: isMobile ? size.height * 0.5 : size.height * 0.8,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Glowing circle avatar
-                      Container(
-                        width: isMobile ? 100 : 150,
-                        height: isMobile ? 100 : 150,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.blueAccent,
-                            width: isMobile ? 3 : 5,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blueAccent.withOpacity(0.6),
-                              blurRadius: 25,
-                              spreadRadius: 5,
-                              offset: Offset(0, 0),
+                  // width: isMobile ? size.width * 0.95 : size.width * 0.35,
+                  // height: isMobile ? size.height * 0.5 : size.height * 0.8,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: isMobile ? size.height * 0.04 : size.height * 0.01,
+                        ),
+                        // Glowing circle avatar
+                        Container(
+                          width: isMobile ? 100 : 150,
+                          height: isMobile ? 100 : 150,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.blueAccent,
+                              width: isMobile ? 3 : 5,
                             ),
-                          ],
-                        ),
-                        child: AvatarGlow(
-                          startDelay: const Duration(milliseconds: 1000),
-                          glowColor: Colors.green,
-                          glowShape: BoxShape.circle,
-                          glowRadiusFactor: 0.4,
-                          duration: Duration(seconds: 2),
-                          glowCount: 3,
-                          child: const Material(
-                            elevation: 8.0,
-                            shape: CircleBorder(),
-                            color: Colors.green,
-                            child: CircleAvatar(
-                              backgroundImage: AssetImage('assets/images.jpg'),
-                              radius: 50.0,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blueAccent.withOpacity(0.6),
+                                blurRadius: 25,
+                                spreadRadius: 5,
+                                offset: Offset(0, 0),
+                              ),
+                            ],
+                          ),
+                          child: AvatarGlow(
+                            startDelay: const Duration(milliseconds: 1000),
+                            glowColor: Colors.green,
+                            glowShape: BoxShape.circle,
+                            glowRadiusFactor: 0.4,
+                            duration: Duration(seconds: 2),
+                            glowCount: 3,
+                            child: const Material(
+                              elevation: 8.0,
+                              shape: CircleBorder(),
+                              color: Colors.green,
+                              child: CircleAvatar(
+                                backgroundImage: AssetImage('assets/images.jpg'),
+                                radius: 50.0,
+                              ),
                             ),
                           ),
+                        ).animate().scale(delay: 500.ms, duration: 1.seconds).fadeIn(),
+                        // SizedBox(height: isMobile ? 20 : 100),
+                        // Animated text with typing effect
+                        SizedBox(
+                          height: isMobile ? size.height * 0.0 : size.height * 0.03,
                         ),
-                      ).animate().scale(delay: 500.ms, duration: 1.seconds).fadeIn(),
-                      SizedBox(height: isMobile ? 20 : 100),
-                      // Animated text with typing effect
-                      RandomTextReveal(
-                        key: globalKey,
-                        text: 'Hi, I\'m Nitish Chaurasiya',
-                        initialText: 'Ae8&vNQ32cK^',
-                        shouldPlayOnStart: true,
-                        textAlign: TextAlign.center,
-                        duration: const Duration(seconds: 2),
-                        style: GoogleFonts.orbitron(
-                          textStyle: const TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 7,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RandomTextReveal(
+                            key: globalKey,
+                            text: 'Hi, I\'m Nitish Chaurasiya',
+                            initialText: 'Ae8&vNQ32cK^',
+                            shouldPlayOnStart: true,
+                            textAlign: TextAlign.center,
+                            duration: const Duration(seconds: 2),
+                            style: GoogleFonts.orbitron(
+                              textStyle: TextStyle(
+                                fontSize: isMobile ? size.width * 0.045 : size.width * 0.022,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 7,
+                              ),
+                            ),
+                            randomString: Source.alphabets,
+                            onFinished: () {
+                              debugPrint('Password cracked successfully');
+                            },
+                            curve: Curves.easeIn,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                         ),
-                        randomString: Source.alphabets,
-                        onFinished: () {
-                          debugPrint('Password cracked successfully');
-                        },
-                        curve: Curves.easeIn,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
-                      // AnimatedTextKit(
-                      //   animatedTexts: [
-                      //     TypewriterAnimatedText(
-                      //       'Hi, I\'m Nitish Chaurasiya',
-                      //       textStyle: TextStyle(
-                      //         fontSize: isMobile ? 24 : 40,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: Colors.white,
-                      //       ),
-                      //       speed: Duration(milliseconds: 100),
-                      //     ),
-                      //   ],
-                      //   totalRepeatCount: 1,
-                      // ),
-                      SizedBox(height: isMobile ? 10 : 20),
-                      // Simple Text for "Flutter Developer"
-                      Text(
-                        'App Developer',
-                        style: GoogleFonts.orbit(
-                          fontSize: isMobile ? 20 : 30,
-                          color: Colors.white70,
-                        ),
-                      ).animate().fadeIn(duration: 2.seconds),
-                      SizedBox(height: isMobile ? 20 : 40),
-                      // Download Resume Button with ripple effect
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Download Resume',
-                          style: GoogleFonts.orbit(color: Colors.green, fontSize: isMobile ? 14 : 20),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: isMobile ? 16 : 20,
-                            vertical: isMobile ? 8 : 10,
+                        Text(
+                          'App Developer',
+                          style: GoogleFonts.orbit(
+                            fontSize: isMobile ? size.width * 0.045 : size.width * 0.015,
+                            color: Colors.white70,
+                          ),
+                        ).animate().fadeIn(duration: 2.seconds),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: SizedBox(
+                            child: Text(
+                              """I am a dedicated App Developer with expertise in Flutter and Dart, experienced in creating innovative apps like Soundscape (10K+ downloads) and European-Pay. Proficient in state management, backend integration, and UI design, I have enhanced app efficiency and features across various domains. A winner of the Shankara Global Hackathon and finalist in multiple national competitions, I bring a strong problem-solving mindset and a passion for building impactful digital solutions.""",
+                              style: GoogleFonts.orbit(
+                                fontSize: isMobile ? size.width * 0.032 : size.width * 0.01,
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.fade,
+                            ).animate().fadeIn(duration: 2.seconds),
                           ),
                         ),
-                      ).animate().shimmer(duration: 2.seconds, delay: 1.seconds),
-                    ],
+                        SizedBox(
+                          height: isMobile ? size.width * 0.01 : size.width * 0.02,
+                        ),
+                        // Download Resume Button with ripple effect
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isMobile ? 16 : 20,
+                              vertical: isMobile ? 8 : 10,
+                            ),
+                          ),
+                          child: Text(
+                            'Download Resume',
+                            style: GoogleFonts.orbit(
+                                color: Colors.green,
+                                fontSize: isMobile ? size.width * 0.025 : size.width * 0.01,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ).animate().shimmer(duration: 2.seconds, delay: 1.seconds),
+                      ],
+                    ),
                   ),
                 ),
-              ) ,
+              ),
             ),
           ),
         ),

@@ -26,9 +26,10 @@ class MyPortfolio extends StatelessWidget {
           bool isMobile = constraints.maxWidth < 600; // Mobile breakpoint
 
           return Scaffold(
+            extendBody: true,
+            extendBodyBehindAppBar: true,
             appBar: AppBar(
-              title: Text('Portfolio'),
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.transparent,
               actions: isMobile
                   ? [
                 PopupMenuButton<String>(
@@ -44,19 +45,19 @@ class MyPortfolio extends StatelessWidget {
                   : [
                 TextButton(
                   onPressed: () => _scrollToSection(homeKey),
-                  child: Text('Home', style: TextStyle(color: Colors.white)),
+                  child: Text('Home', style: TextStyle(color: Colors.green)),
                 ),
                 TextButton(
                   onPressed: () => _scrollToSection(aboutKey),
-                  child: Text('About', style: TextStyle(color: Colors.white)),
+                  child: Text('About', style: TextStyle(color: Colors.green)),
                 ),
                 TextButton(
                   onPressed: () => _scrollToSection(projectsKey),
-                  child: Text('Projects', style: TextStyle(color: Colors.white)),
+                  child: Text('Projects', style: TextStyle(color: Colors.green)),
                 ),
                 TextButton(
                   onPressed: () => _scrollToSection(contactKey),
-                  child: Text('Contact', style: TextStyle(color: Colors.white)),
+                  child: Text('Contact', style: TextStyle(color: Colors.green)),
                 ),
               ],
             ),

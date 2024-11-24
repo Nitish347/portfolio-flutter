@@ -73,16 +73,16 @@ class _MyWorksState extends State<MyWorks> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    bool isMobile = size.width < 1000;
+    bool isMobile = size.width < 800;
 
     return Positioned.fill(
-      top: isMobile ? size.height * 0.55 : size.height * 0.15,
+      top: isMobile ? size.height * 0.6 : size.height * 0.15,
       child: Align(
         alignment: isMobile ? Alignment.center : Alignment.centerRight,
         child: Padding(
           padding: EdgeInsets.only(
             right: isMobile ? 0 : 50,
-            top: isMobile ? 30 : 50,
+            top: isMobile ? size.width*0.2: size.width * 0.05,
           ),
           child: SizedBox(
             width: isMobile ? size.width : size.width * 0.5,
@@ -139,31 +139,31 @@ class _MyWorksState extends State<MyWorks> with SingleTickerProviderStateMixin {
         borderRadius: BorderRadius.circular(10),
         margin: const EdgeInsets.symmetric(horizontal: 0),
         // shadowColor: Colors.transparent, // Ensure no shadow
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(500),
-                image: DecorationImage(
-                  image: AssetImage(
-                    brand["img"] ?? "",
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(500),
+                  image: DecorationImage(
+                    image: AssetImage(
+                      brand["img"] ?? "",
+                    ),
                   ),
                 ),
+                height: isMobile ? size.height * 0.1 : size.height * 0.12,
+                width: size.width,
               ),
-              height: isMobile ? size.height * 0.1 : size.height * 0.12,
-              width: size.width,
-            ),
-            Expanded(
-              child: Text(
+              Text(
                 brand["name"] ?? "",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.orbit(color: Colors.white.withOpacity(0.7), fontWeight: FontWeight.w600, fontSize: isMobile ? 15 : size.width*0.01),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -47,24 +47,18 @@ class AboutSection extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: isMobile ? 30 : 40),
-          Text(
-            "Education",
-            style: GoogleFonts.poppins(
-              fontSize: isMobile ? size.width * 0.04 : size.width * 0.02,
-              fontWeight: FontWeight.w800,
-              color: Colors.green,
-            ),
-          ),  SizedBox(height: isMobile ? 30 : 40),
+          SizedBox(height: isMobile ? 10 : 10),
+
+          _buildResponsiveTimeline(context),
           // Timeline Section
-          if (isMobile) ...[
-            // Mobile View: Single Column Timeline
-            _buildSingleColumnTimeline(),
-          ] else ...[
-            // Tablet or Web View: Two Timelines Side by Side
-            _buildDoubleColumnTimeline(isTablet),
-          ],
-          SizedBox(height: isMobile ? 30 : 40),
+          // if (isMobile) ...[
+          // Mobile View: Single Column Timeline
+          // _buildSingleColumnTimeline(context),
+          // ] else ...[
+          // Tablet or Web View: Two Timelines Side by Side
+          // _buildDoubleColumnTimeline(isTablet),
+          // ],
+          SizedBox(height: isMobile ? 30 : 10),
           // Skill Section
           Text(
             "Skills",
@@ -112,114 +106,128 @@ class AboutSection extends StatelessWidget {
   }
 
   // Method to build a single column timeline (for Mobile)
-  Widget _buildSingleColumnTimeline() {
-    return Column(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildTimelineItem(
-              title: "Ajay Kumar Garg Engineering College",
-              subtitle: "B.Tech in Computer Science (2021-2024)",
-              isFirst: true,
-              isLast: false,
+  Widget _buildResponsiveTimeline(BuildContext context) {
+    bool isMobile = MediaQuery.of(context).size.width < 800;
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Divider(
+                  color: Colors.green,
+                ),
+                SizedBox(height: isMobile ? 20 : 40),
+                _buildTimelineColumn2(context, " Achievement"),
+                Divider(
+                  color: Colors.green,
+                ),
+                SizedBox(height: isMobile ? 20 : 40),
+                _buildTimelineColumn(context, "Education"),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTimelineColumn2(context, "Achievement"),
+                Divider(
+                  color: Colors.green,
+                ),
+                _buildTimelineColumn(context, "Education"),
+              ],
             ),
-            _buildTimelineItem(
-              title: "Surya International Academy",
-              subtitle: "High School & Intermediate (2017-2019)",
-              isFirst: false,
-              isLast: false,
-            ),
-            _buildTimelineItem(
-              title: "Primary Education",
-              subtitle: "St. Mary's School (2008-2016)",
-              isFirst: false,
-              isLast: true,
-            ),
-          ],
-        ),
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: [
-        //     _buildTimelineItem(
-        //       title: "Ajay Kumar Garg Engineering College",
-        //       subtitle: "B.Tech in Computer Science (2021-2024)",
-        //       isFirst: true,
-        //       isLast: false,
-        //     ),
-        //     _buildTimelineItem(
-        //       title: "Surya International Academy",
-        //       subtitle: "High School & Intermediate (2017-2019)",
-        //       isFirst: false,
-        //       isLast: false,
-        //     ),
-        //     _buildTimelineItem(
-        //       title: "Primary Education",
-        //       subtitle: "St. Mary's School (2008-2016)",
-        //       isFirst: false,
-        //       isLast: true,
-        //     ),
-        //   ],
-        // ),
-      ],
     );
   }
 
-  // Method to build two columns of timeline (for Tablet & Web)
-  Widget _buildDoubleColumnTimeline(bool isTablet) {
-    return Container(
-// color: Colors.red,
-      width: 400,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildTimelineColumn(BuildContext context, String text) {
+    bool isMobile = MediaQuery.of(context).size.width < 800;
+
+    var size = MediaQuery.of(context).size;
+    return SizedBox(
+      width: isMobile ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width * 0.22,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            flex: isTablet ? 1 : 2, // Adjust based on screen size
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildTimelineItem(
-                  title: "Ajay Kumar Garg Engineering College",
-                  subtitle: "B.Tech in Computer Science (2021-2024)",
-                  isFirst: true,
-                  isLast: false,
-                ),
-                _buildTimelineItem(
-                  title: "Surya International Academy",
-                  subtitle: "High School & Intermediate (2017-2019)",
-                  isFirst: false,
-                  isLast: true,
-                ),
-              ],
+          Text(
+            text,
+            style: GoogleFonts.poppins(
+              fontSize: isMobile ? size.width * 0.06 : size.width * 0.02,
+              fontWeight: FontWeight.w800,
+              color: Colors.green,
             ),
           ),
-          // const SizedBox(width: 40), // Spacing between columns
-          // Expanded(
-          //   flex: isTablet ? 1 : 2, // Adjust based on screen size
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.center,
-          //     children: [
-          //       _buildTimelineItem(
-          //         title: "Ajay Kumar Garg Engineering College",
-          //         subtitle: "B.Tech in Computer Science (2021-2024)",
-          //         isFirst: true,
-          //         isLast: false,
-          //       ),
-          //       _buildTimelineItem(
-          //         title: "Surya International Academy",
-          //         subtitle: "High School & Intermediate (2017-2019)",
-          //         isFirst: false,
-          //         isLast: false,
-          //       ),
-          //       _buildTimelineItem(
-          //         title: "Primary Education",
-          //         subtitle: "St. Mary's School (2008-2016)",
-          //         isFirst: false,
-          //         isLast: true,
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          SizedBox(height: isMobile ? 20 : 20),
+          _buildTimelineItem(
+            title: "Ajay Kumar Garg Engineering College",
+            subtitle: "B.Tech in Computer Science (2021-2024)",
+            isFirst: true,
+            isLast: false,
+          ),
+          _buildTimelineItem(
+            title: "Surya International Academy",
+            subtitle: "High School & Intermediate (2017-2019)",
+            isFirst: false,
+            isLast: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimelineColumn2(BuildContext context, String text) {
+    bool isMobile = MediaQuery.of(context).size.width < 800;
+
+    var size = MediaQuery.of(context).size;
+    return SizedBox(
+      width: isMobile ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width * 0.2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Section Header
+
+          // Achievements Section
+          Text(
+            "Achievements",
+            style: GoogleFonts.poppins(
+              fontSize: isMobile ? size.width * 0.06 : size.width * 0.02,
+              fontWeight: FontWeight.w800,
+              color: Colors.green,
+            ),
+          ),
+          SizedBox(height: isMobile ? 20 : 20),
+
+          // Achievements List
+          _buildAchievementItem("Winner - Shankara Global Hackathon 2023"),
+          _buildAchievementItem("Finalist - Smart India Hackathon 2022"),
+          _buildAchievementItem("Finalist - Anveshna 2023"),
+          _buildAchievementItem("Finalist - Rajasthan IT Day Hackathon 2023"),
+          _buildAchievementItem("Solved 400+ DSA questions on various platforms."),
+          _buildAchievementItem(
+              "Flipkart GRiD 4.0: Level 1 Qualifier - among the top 7 teams to qualify from college."),
+          _buildAchievementItem("Got 3150th rank in Google Kickstart"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAchievementItem(String achievement) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green, size: 20),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              achievement,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey[800],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -234,13 +242,15 @@ class AboutSection extends StatelessWidget {
   }) {
     return Center(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // Glowing Animated Circle
+              SizedBox(height: 10,),
               AvatarGlow(
                 startDelay: const Duration(milliseconds: 800),
                 glowColor: Colors.green,
@@ -262,12 +272,7 @@ class AboutSection extends StatelessWidget {
                   ),
                 ),
               ),
-              if (!isLast)
-                Container(
-                  width: 2,
-                  height: 60,
-                  color: Colors.green.withOpacity(0.5),
-                ),
+
             ],
           ),
           const SizedBox(width: 20),

@@ -242,7 +242,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
             depth: 15,
             spread: 0,
             child: Container(
-              width: screenWidth < 800 ? screenWidth * 0.8 : screenWidth * 0.3, // Reduced dialog width
+              width: screenWidth < 800 ? screenWidth * 0.8 : screenWidth * 0.4, // Reduced dialog width
               padding: const EdgeInsets.all(15.0), // Reduced padding
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -251,7 +251,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
-                      height: screenWidth < 800 ? screenHeight * 0.18 : screenHeight * 0.3, // Adjusted image height
+                      height: screenWidth < 800 ? screenHeight * 0.18 : screenHeight * 0.4, // Adjusted image height
                       color: Colors.grey,
                       child: Center(
                         child: Text(
@@ -301,7 +301,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), // Reduced padding
                             child: Image.asset(
                               "assets/logo/google_play.png",
-                              width: 80, // Reduced image width
+                              width: 120, // Reduced image width
                             ),
                           ),
                         ),
