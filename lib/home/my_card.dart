@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:glossy/glossy.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portfolio_flutter/utils.dart';
 import 'package:random_text_reveal/random_text_reveal.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyCard extends StatefulWidget {
   const MyCard({super.key});
@@ -145,7 +149,7 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
                           padding: const EdgeInsets.all(12.0),
                           child: SizedBox(
                             child: Text(
-                              """I am a dedicated App Developer with expertise in Flutter and Dart, experienced in creating innovative apps like Soundscape (10K+ downloads) and European-Pay. Proficient in state management, backend integration, and UI design, I have enhanced app efficiency and features across various domains. A winner of the Shankara Global Hackathon and finalist in multiple national competitions, I bring a strong problem-solving mindset and a passion for building impactful digital solutions.""",
+                              "I am a dedicated App Developer skilled in Flutter and Dart, with experience creating apps like Soundscape (10K+ downloads) and European-Pay. Proficient in state management, backend integration, and UI design. Winner of Shankara Global Hackathon and finalist in national competitions, passionate about building impactful digital solutions.",
                               style: GoogleFonts.orbit(
                                 fontSize: isMobile ? size.width * 0.032 : size.width * 0.01,
                                 color: Colors.white.withOpacity(0.8),
@@ -160,7 +164,11 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
                         ),
                         // Download Resume Button with ripple effect
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+
+                            await launchUrl(Uri.parse(RESUME), mode: LaunchMode.externalApplication);
+
+                          },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
                               horizontal: isMobile ? 16 : 20,
@@ -168,7 +176,7 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           child: Text(
-                            'Download Resume',
+                            'My Resume',
                             style: GoogleFonts.orbit(
                                 color: Colors.green,
                                 fontSize: isMobile ? size.width * 0.025 : size.width * 0.01,

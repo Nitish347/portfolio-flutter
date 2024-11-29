@@ -1,10 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'home/home_section.dart';
 import 'about/about_section.dart';
 import 'projects_section.dart';
 import 'contact_section.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions (
+      apiKey: "AIzaSyAE7RDBeBQnNd7G_1JXSSx6daVN-3hLNEU",
+      authDomain: "sihapp-2bc87.firebaseapp.com",
+      projectId: "sihapp-2bc87",
+      storageBucket: "sihapp-2bc87.firebasestorage.app",
+      messagingSenderId: "270653334549",
+      appId: "1:270653334549:web:1d56e83fd6a4e77402da1c",
+      measurementId: "G-7FQEQN476W"
+    ),
+  );
   runApp(MyPortfolio());
 }
 
@@ -30,35 +43,40 @@ class MyPortfolio extends StatelessWidget {
             extendBodyBehindAppBar: true,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
+              elevation: 0,
               actions: isMobile
                   ? [
                 PopupMenuButton<String>(
                   onSelected: (value) => _handleNavigation(value),
+                  surfaceTintColor: Colors.green,
+                  color: Colors.green,
+                  iconColor: Colors.green,
                   itemBuilder: (context) => [
-                    PopupMenuItem(value: 'Home', child: Text('Home')),
-                    PopupMenuItem(value: 'About', child: Text('About')),
-                    PopupMenuItem(value: 'Projects', child: Text('Projects')),
-                    PopupMenuItem(value: 'Contact', child: Text('Contact')),
+                    const PopupMenuItem(value: 'Home', child: Text('Home',style: TextStyle(color: Colors.white),)),
+                    const PopupMenuItem(value: 'About', child: Text('About',style: TextStyle(color: Colors.white))),
+                    const PopupMenuItem(value: 'Projects', child: Text('Projects',style: TextStyle(color: Colors.white))),
+                    const PopupMenuItem(value: 'Contact', child: Text('Contact',style: TextStyle(color: Colors.white))),
                   ],
                 ),
               ]
                   : [
                 TextButton(
                   onPressed: () => _scrollToSection(homeKey),
-                  child: Text('Home', style: TextStyle(color: Colors.green)),
+                  child: const Text('Home', style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold)),
                 ),
                 TextButton(
                   onPressed: () => _scrollToSection(aboutKey),
-                  child: Text('About', style: TextStyle(color: Colors.green)),
+                  child: const Text('About', style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold)),
                 ),
                 TextButton(
                   onPressed: () => _scrollToSection(projectsKey),
-                  child: Text('Projects', style: TextStyle(color: Colors.green)),
+                  child: const Text('Projects', style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold)),
                 ),
                 TextButton(
                   onPressed: () => _scrollToSection(contactKey),
-                  child: Text('Contact', style: TextStyle(color: Colors.green)),
+                  child:  const Text('Contact', style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold)),
                 ),
+                const SizedBox(width: 100,)
               ],
             ),
             body: SingleChildScrollView(
@@ -97,7 +115,7 @@ class MyPortfolio extends StatelessWidget {
   void _scrollToSection(GlobalKey key) {
     Scrollable.ensureVisible(
       key.currentContext!,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.easeInOut,
     );
   }

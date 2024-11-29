@@ -58,12 +58,16 @@ class AboutSection extends StatelessWidget {
           // Tablet or Web View: Two Timelines Side by Side
           // _buildDoubleColumnTimeline(isTablet),
           // ],
-          SizedBox(height: isMobile ? 30 : 10),
+          SizedBox(height: isMobile ? 20 : 10),
+          isMobile ?    Divider(
+            color: Colors.green,
+          ) : SizedBox(),
+          SizedBox(height: isMobile ? 20 : 10),
           // Skill Section
           Text(
             "Skills",
             style: GoogleFonts.poppins(
-              fontSize: isMobile ? size.width * 0.04 : size.width * 0.02,
+              fontSize: isMobile ? size.width * 0.06 : size.width * 0.02,
               fontWeight: FontWeight.w800,
               color: Colors.green,
             ),
@@ -146,7 +150,8 @@ class AboutSection extends StatelessWidget {
 
     var size = MediaQuery.of(context).size;
     return SizedBox(
-      width: isMobile ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width * 0.22,
+      width:
+          isMobile ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.width * 0.22,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -250,7 +255,9 @@ class AboutSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // Glowing Animated Circle
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               AvatarGlow(
                 startDelay: const Duration(milliseconds: 800),
                 glowColor: Colors.green,
@@ -272,7 +279,6 @@ class AboutSection extends StatelessWidget {
                   ),
                 ),
               ),
-
             ],
           ),
           const SizedBox(width: 20),

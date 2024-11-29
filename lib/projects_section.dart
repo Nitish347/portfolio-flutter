@@ -2,43 +2,13 @@ import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:portfolio_flutter/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProjectsSection extends StatelessWidget {
   ProjectsSection({Key? key}) : super(key: key);
 
-  // final List<Map<String, String>> projects = [
-  //   {
-  //     'title': 'Soundscape',
-  //     'description': 'An audio player based on mood, frequencies, and more.',
-  //     'link': 'https://play.google.com/store/apps/details?id=com.dps.europeanpay',
-  //   },
-  //   {
-  //     'title': 'European-Pay',
-  //     'description': 'A digital payment app like Paytm and PhonePe.',
-  //     'link': 'https://play.google.com/store/apps/details?id=com.dps.europeanpay',
-  //   },
-  //   {
-  //     'title': 'Eklavya',
-  //     'description': 'An educational app for students.',
-  //     'link': 'https://github.com/Nitish347',
-  //   },    {
-  //     'title': 'Soundscape',
-  //     'description': 'An audio player based on mood, frequencies, and more.',
-  //     'link': 'https://play.google.com/store/apps/details?id=com.dps.europeanpay',
-  //   },
-  //   {
-  //     'title': 'European-Pay',
-  //     'description': 'A digital payment app like Paytm and PhonePe.',
-  //     'link': 'https://play.google.com/store/apps/details?id=com.dps.europeanpay',
-  //   },
-  //   {
-  //     'title': 'Eklavya',
-  //     'description': 'An educational app for students.',
-  //     'link': 'https://github.com/Nitish347',
-  //   },
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +54,7 @@ class ProjectsSection extends StatelessWidget {
               Wrap(
                 spacing: 50,
                 runSpacing: 50,
-
+                alignment: WrapAlignment.center,
                 children: projects.map((project) {
                   return ProjectCard(project: project);
                 }).toList(),
@@ -96,7 +66,6 @@ class ProjectsSection extends StatelessWidget {
     );
   }
 }
-
 
 class ProjectCard extends StatefulWidget {
   final Map<String, String> project;
@@ -144,68 +113,74 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
         builder: (context, child) {
           return Transform.scale(
             scale: _scaleAnimation.value,
-            child: ClayContainer(
-              borderRadius: 10, // Reduced border radius for a sleeker look
-              color: !_isHovering ? Colors.white : Colors.white,
-              parentColor: Colors.white10,
-              depth: !_isHovering ? 15 : 20, // Slightly less depth on hover
-              spread: 5, // Reduced shadow spread
-              curveType: !_isHovering ? CurveType.concave : CurveType.concave,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0), // Reduced padding
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Placeholder for network image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        height: 150, // Reduced image height
-                        width: screenWidth < 800 ? screenWidth * 0.8 : 250, // Adjusted width for smaller screens
-                        color: Colors.grey,
-                        child: const Center(
-                          child: Text(
-                            "Project Image",
-                            style: TextStyle(color: Colors.white),
+            child: InkWell(
+              onTap: () => _showProjectDetails(context, widget.project),
+              child: ClayContainer(
+                borderRadius: 10, // Reduced border radius for a sleeker look
+                color: !_isHovering ? Colors.white : Colors.white,
+                parentColor: Colors.white10,
+                depth: !_isHovering ? 15 : 20, // Slightly less depth on hover
+                spread: 5, // Reduced shadow spread
+                curveType: !_isHovering ? CurveType.concave : CurveType.concave,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0), // Reduced padding
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Placeholder for network image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          height: 150, // Reduced image height
+                          width: screenWidth < 800 ? screenWidth * 0.8 : 280,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(widget.project['img'] != ""
+                                      ? widget.project['img'] ?? ""
+                                      : "assets/background.jpg"),
+                                  fit: BoxFit.cover)), // Adjusted width for smaller screens
+                          // color: Colors.grey,
+                          // child: const Center(
+                          //   child: Text(
+                          //     "Project Image",
+                          //     style: TextStyle(color: Colors.white),
+                          //   ),
+                          // ),
+                        ),
+                      ),
+                      const SizedBox(height: 8), // Reduced gap
+                      SizedBox(
+                        height: screenWidth < 800 ? 30 : 50,
+                        width: screenWidth < 800 ? screenWidth * 0.8 : 250,
+                        child: Text(
+                          widget.project['title'] ?? "",
+                          style: const TextStyle(
+                            fontSize: 18, // Reduced font size
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8), // Reduced gap
-                    SizedBox(
-                      height: screenWidth < 800 ?30 : 50,
-                      width: screenWidth < 800 ? screenWidth * 0.8 : 250,
-                      child: Text(
-                        widget.project['title']!,
-                        style: const TextStyle(
-                          fontSize: 18, // Reduced font size
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                      const SizedBox(height: 8), // Reduced gap
+                      Container(
+                        alignment: Alignment.topCenter,
+                        height: 90,
+                        width: screenWidth < 800 ? screenWidth * 0.8 : 250,
+                        child: Text(
+                          widget.project['descS'] ?? "",
+                          style: TextStyle(
+                            fontSize: 16, // Reduced font size
+                            color: Colors.grey[700],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8), // Reduced gap
-                    Container(
-                      alignment: Alignment.topCenter,
-                      height: 80,
-                      width: screenWidth < 800 ? screenWidth * 0.8 : 250,
-                      child: Text(
-                        widget.project['descS']!,
-                        style: TextStyle(
-                          fontSize: 16, // Reduced font size
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8), // Reduced gap
-                    TextButton(
-                      onPressed: () => _showProjectDetails(context, widget.project),
-                      child: const Text(
+                      const SizedBox(height: 8), // Reduced gap
+                      Text(
                         'Show More',
                         style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -227,114 +202,198 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
   }
 
   void _showProjectDetails(BuildContext context, Map<String, String> project) {
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (context) {
+      barrierDismissible: true, // Allows dismissal by tapping outside
+      barrierLabel: "Dismiss",
+      transitionDuration: const Duration(milliseconds: 300), // Animation duration
+      pageBuilder: (context, animation, secondaryAnimation) {
         double screenWidth = MediaQuery.of(context).size.width;
         double screenHeight = MediaQuery.of(context).size.height;
 
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15), // Reduced dialog border radius
-          ),
-          child: ClayContainer(
-            borderRadius: 15,
-            depth: 15,
-            spread: 0,
-            child: Container(
-              width: screenWidth < 800 ? screenWidth * 0.8 : screenWidth * 0.4, // Reduced dialog width
-              padding: const EdgeInsets.all(15.0), // Reduced padding
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      height: screenWidth < 800 ? screenHeight * 0.18 : screenHeight * 0.4, // Adjusted image height
-                      color: Colors.grey,
-                      child: Center(
-                        child: Text(
-                          "Project Image Placeholder",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8), // Reduced gap
-                  Text(
-                    project['title']!,
-                    style: TextStyle(
-                      fontSize: 22, // Reduced font size
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green[700],
-                    ),
-                  ),
-                  const SizedBox(height: 8), // Reduced gap
-                  Container(
-                    height: screenWidth < 800 ? screenHeight * 0.22 : screenHeight * 0.2, // Adjusted content height
-                    child: Text(
-                      project['desc']!,
-                      style: TextStyle(
-                        fontSize: 16, // Reduced font size
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15), // Reduced gap
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          final url = project['playStore']!;
-                          if (await canLaunchUrl(Uri.parse(url))) {
-                            await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
-                        },
-                        child: Card(
-                          elevation: 2,
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), // Reduced padding
-                            child: Image.asset(
-                              "assets/logo/google_play.png",
-                              width: 120, // Reduced image width
+        return Center(
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15), // Reduced dialog border radius
+            ),
+            child: ClayContainer(
+              borderRadius: 15,
+              depth: 15,
+              spread: 0,
+              child: Container(
+                width: screenWidth < 800
+                    ? screenWidth * 0.8
+                    : screenWidth * 0.5, // Reduced dialog width
+                padding: const EdgeInsets.all(15.0), // Reduced padding
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pop(); // Close the current dialog
+                        _showImageZoom(context, project['img'] ?? "assets/background.jpg");
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          height: screenWidth < 800
+                              ? screenHeight * 0.2
+                              : screenHeight * 0.5, // Adjusted image height
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                project['img'] != "" ? project['img']! : "assets/background.jpg",
+                              ),
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
                       ),
-                      if (project['link'] != null)
-                        IconButton(
-                          icon: const FaIcon(
-                            FontAwesomeIcons.github,
-                            color: Colors.black,
+                    ),
+                    const SizedBox(height: 8), // Reduced gap
+                    Text(
+                      project['title']!,
+                      style: TextStyle(
+                        fontSize: 22, // Reduced font size
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[700],
+                      ),
+                    ),
+                    const SizedBox(height: 8), // Reduced gap
+                    SingleChildScrollView(
+                      child: Container(
+                        height: screenWidth < 800
+                            ? screenHeight * 0.25
+                            : screenHeight * 0.2, // Adjusted content height
+                        child: Scrollbar(
+                          thumbVisibility: true, // Optional: keeps scrollbar visible
+                          child: SingleChildScrollView(
+                            child: Text(
+                              project['desc']!,
+                              style: TextStyle(
+                                fontSize: 16, // Reduced font size
+                                color: Colors.grey[700],
+                              ),
+                            ),
                           ),
-                          onPressed: () async {
-                            final url = project['link']!;
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15), // Reduced gap
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            final url = project['playStore']!;
                             if (await canLaunchUrl(Uri.parse(url))) {
                               await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
                             } else {
                               throw 'Could not launch $url';
                             }
                           },
+                          child: Card(
+                            elevation: 2,
+                            color: Colors.white,
+                            child: SizedBox(
+                              height: 35,
+                              width: 110,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 6), // Reduced padding
+                                child: Image.asset(
+                                  "assets/logo/google_play.png",
+                                  width: 120, // Reduced image width
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'Close',
-                        style: TextStyle(color: Colors.red),
+                        if (project["web"] != "")
+                          InkWell(
+                            onTap: () async {
+                              final url = project['web']!;
+                              if (await canLaunchUrl(Uri.parse(url))) {
+                                await launchUrl(Uri.parse(url),
+                                    mode: LaunchMode.externalApplication);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            child: Card(
+                              color: Colors.white,
+                              surfaceTintColor: Colors.white,
+                              elevation: 2,
+                              child: Container(
+                                alignment: Alignment.center,
+                                // height: screenWidth*0.025,
+                                // width: screenWidth*0.07,
+                                height: 35,
+                                width: 110,
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    FaIcon(
+                                      FontAwesomeIcons.globe,
+                                      color: Colors.black87,
+                                    ),
+                                    Text(
+                                      "Website",
+                                      style: TextStyle(fontSize: 15, color: Colors.black87),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return ScaleTransition(
+          scale: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeInOut,
+          ),
+          child: child,
+        );
+      },
+    );
+  }
+
+  void _showImageZoom(BuildContext context, String imagePath) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.black,
+          child: PhotoView(
+            imageProvider: AssetImage(imagePath),
+            backgroundDecoration: const BoxDecoration(
+              color: Colors.transparent,
             ),
           ),
         );
